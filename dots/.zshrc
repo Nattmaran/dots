@@ -4,6 +4,7 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt autocd extendedglob
 bindkey -v
+bindkey '^R' history-incremental-pattern-search-backward
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/sneeky/.zshrc'

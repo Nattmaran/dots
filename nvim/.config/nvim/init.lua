@@ -68,6 +68,7 @@ opt('w', 'relativenumber', true)                      -- Relative line numbers
 opt('w', 'wrap', false)                               -- Disable line wrap
 -------------------- MAPPINGS ------------------------------
 map('', '<leader>c', '"+y')       -- Copy to clipboard in normal, visual, select and operator modes
+map('n', '<leader>tt', '<cmd> lua require"usermod".makeJavaTest()<CR>')
 
 map('n', '<leader>s', ':Startify<CR>')
 
@@ -82,6 +83,13 @@ map('n', '<C-w>t', '<cmd>split term://bash<CR>')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
+vim.cmd [[
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
+
+imap <c-k> <Plug>(completion_prev_source)
+imap <c-j> <Plug>(completion_next_source)
+]]
 -------------------- STARTIFY ---------------------------
 g.pastetoggle = '<f5>'
 g.startify_bookmarks = {
@@ -94,8 +102,16 @@ local ts = require 'nvim-treesitter.configs'
 ts.setup {ensure_installed = 'maintained', highlight = {enable = true}}
 -------------------- COMPLETION -----------------------------------
 opt('o','completeopt','menuone,noinsert,noselect')
-g.completion_matching_strategy = {'exact','substring','fuzzy'}
 g.completion_enable_snippet = 'UltiSnips'
+g.completion_matching_strategy_list = {'exact','substring','fuzzy'}
+g.completion_chain_complete_list = {
+  default = {
+    {complete_items = {'lsp','path'}},
+    {complete_items = {'snippet'}},
+    {mode = {'<c-p>'}},
+    {mode = {'<c-n>'}},
+  }
+}
 -------------------- DAP -----------------------------------
 local dap = require('dap')
 dap.adapters.java = function(callback)
