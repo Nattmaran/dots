@@ -16,14 +16,8 @@ usermod.loadLsp = function()
     root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'}),
     on_attach = function()
       require'lspmaps'.on_attach()
-      require'completion'.on_attach()
-      require'jdtls'.setup_dap({ hotcoderplace = 'auto' })
     end,
-    init_options = {
-      bundles = {
-       vim.fn.glob("/home/sneeky/dev/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar")
-      }
-    }
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   })
 end
 

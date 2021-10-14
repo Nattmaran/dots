@@ -28,7 +28,12 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+
+--completion
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+
 Plug 'mhinz/vim-startify'
 
 Plug 'nvim-lua/plenary.nvim'
@@ -40,7 +45,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vimwiki/vimwiki'
 
 Plug 'mfussenegger/nvim-jdtls'
-Plug 'mfussenegger/nvim-dap'
 
 vim.call('plug#end')
 
@@ -78,11 +82,14 @@ map('n', '<C-p>', "<cmd>lua require'telescope.builtin'.find_files()<CR>")
 map('n', '<C-b>', "<cmd>lua require'telescope.builtin'.live_grep()<CR>")
 
 map('n', '<C-l>', '<cmd>noh<CR>')    -- Clear highlights
-map('n', '<C-w>t', '<cmd>split term://bash<CR>')
+map('n', '<C-w>t', '<cmd>split term://zsh<CR>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
+map('n', '<leader>rl', '<cmd>lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR><cmd>:edit<CR>')
+
+--[[
 vim.cmd [[
 imap <tab> <Plug>(completion_smart_tab)
 imap <s-tab> <Plug>(completion_smart_s_tab)
@@ -102,29 +109,20 @@ local ts = require 'nvim-treesitter.configs'
 ts.setup {ensure_installed = 'maintained', highlight = {enable = true}}
 -------------------- COMPLETION -----------------------------------
 opt('o','completeopt','menuone,noinsert,noselect')
-g.completion_enable_snippet = 'UltiSnips'
-g.completion_matching_strategy_list = {'exact','substring','fuzzy'}
-g.completion_chain_complete_list = {
-  default = {
-    {complete_items = {'lsp','path'}},
-    {complete_items = {'snippet'}},
-    {mode = {'<c-p>'}},
-    {mode = {'<c-n>'}},
+local cmp = require'cmp'
+cmp.setup{
+  snippet = {
+    expand = function(args)
+      vim.fn["UltiSnips#Anon"](args.body)
+    end,
+  },
+  sources = {
+    { name = 'nvim-lsp' },
+    { name = 'ultisnips' },
+    { name = 'buffer' }
   }
 }
--------------------- DAP -----------------------------------
-local dap = require('dap')
-dap.adapters.java = function(callback)
-  -- here a function needs to trigger the `vscode.java.startDebugSession` LSP command
-  -- The response to the command must be the `port` used below
-  vim.lsp.buf.execute_command('vscode.java.startDebugSession')
-  callback({
-    type = 'server';
-    host = '127.0.0.1';
-    port = port;
-  })
-end
--------------------- LSP -----------------------------------
+---------------------- LSP -----------------------------------
 local lspconfig = require'lspconfig'
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
 local sumneko_root_path = fn.getenv("HOME") .. '/dev/lua-language-server'
@@ -138,7 +136,6 @@ lspconfig.sumneko_lua.setup {
   cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
   on_attach = function()
        require'lspmaps'.on_attach()
-       require'completion'.on_attach()
      end,
   settings = {
     Lua = {
@@ -162,6 +159,7 @@ lspconfig.sumneko_lua.setup {
       },
     },
   },
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
 vim.cmd 'source $HOME/.config/nvim/java-lsp.vim'
@@ -170,8 +168,8 @@ lspconfig.lemminx.setup{
     cmd = { "lemminx" },
     on_attach = function()
       require'lspmaps'.on_attach()
-      require'completion'.on_attach()
-    end
+    end,
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
 lspconfig.yamlls.setup{
@@ -179,13 +177,20 @@ lspconfig.yamlls.setup{
   filetypes = {"yaml"},
   on_attach = function()
     require'lspmaps'.on_attach()
-    require'completion'.on_attach()
-  end
+  end,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
 lspconfig.denols.setup{
   on_attach = function()
     require'lspmaps'.on_attach()
-    require'completion'.on_attach()
-  end
+  end,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+}
+
+lspconfig.pylsp.setup{
+  on_attach = function()
+    require'lspmaps'.on_attach()
+  end,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
