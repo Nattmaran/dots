@@ -2,6 +2,5 @@
 
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
 do
-  stow  --dotfiles -D $folder
-  stow  --dotfiles $folder
+  stow $folder
 done
