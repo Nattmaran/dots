@@ -11,6 +11,8 @@ usermod.makeJavaTest = function()
 end
 
 usermod.loadLsp = function()
+  local JAVA_TOOL_OPTIONS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.20/lombok-1.18.20.jar"
+  vim.cmd('!export JAVA_TOOL_OPTIONS=' .. JAVA_TOOL_OPTIONS)
   require('jdtls').start_or_attach({
     cmd = {'jdtls', vim.fn.getenv('HOME') .. '/workspace/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')},
     root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'}),

@@ -33,6 +33,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind-nvim'
 
 Plug 'mhinz/vim-startify'
 
@@ -118,6 +119,7 @@ cmp.setup({
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
+
   mapping = {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -125,11 +127,25 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
+
+  formatting = {
+    format = require("lspkind").cmp_format({with_text = false, menu = ({
+      buffer = "[Buffer]",
+      nvim_lsp = "[LSP]",
+      ultisnips = "[Snippet]",
+    })}),
+  },
+
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'ultisnips' },
-    { name = 'buffer' },
+    { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'ultisnips', keyword_length = 2 },
+    { name = 'buffer', keyword_length = 5 },
+  },
+
+  experimental = {
+    native_menu = false,
   }
+
 })
 ---------------------- LSP -----------------------------------
 local lspconfig = require'lspconfig'
