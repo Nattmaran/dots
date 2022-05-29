@@ -47,6 +47,9 @@ Plug 'vimwiki/vimwiki'
 
 Plug 'mfussenegger/nvim-jdtls'
 
+-- debugging
+Plug 'mfussenegger/nvim-dap'
+
 vim.call('plug#end')
 
 -------------------- OPTIONS ------------------------------
@@ -82,6 +85,12 @@ map('n', '<leader>ff', ':NERDTreeFind<CR>')
 map('n', '<C-p>', "<cmd>lua require'telescope.builtin'.find_files()<CR>")
 map('n', '<C-b>', "<cmd>lua require'telescope.builtin'.live_grep()<CR>")
 
+map('n', '<F9>', "<cmd>lua require'dap'.continue()<CR>")
+map('n', '<F8>', "<cmd>lua require'dap'.step_over()<CR>")
+map('n', '<F7>', "<cmd>lua require'dap'.step_into()<CR>")
+map('n', '<F12>', "<cmd>lua require'dap'.step_out()<CR>")
+map('n', '<leader>b', "<cmd>lua require'dap'.toggle_breakpoint()<CR>")
+
 map('n', '<C-l>', '<cmd>noh<CR>')    -- Clear highlights
 map('n', '<C-w>t', '<cmd>split term://zsh<CR>')
 
@@ -90,14 +99,9 @@ map('v', '>', '>gv')
 
 map('n', '<leader>rl', '<cmd>lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR><cmd>:edit<CR>')
 
---[[
-vim.cmd [[
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
+map('', '<C-k>', ':cprev <CR>')
+map('', '<C-j>', ':cnext <CR>')
 
-imap <c-k> <Plug>(completion_prev_source)
-imap <c-j> <Plug>(completion_next_source)
-]]
 -------------------- STARTIFY ---------------------------
 g.pastetoggle = '<f5>'
 g.startify_bookmarks = {
@@ -105,9 +109,26 @@ g.startify_bookmarks = {
   {b = '~/.bashrc'},
   {z = '~/.zshrc'}
 }
+
+local dap = require('dap')
+
+dap.adapters.go = {
+  type = 'executable';
+  command = 'dlv';
+  args = {'debug'};
+}
+
+dap.configurations.go = {
+  {
+    type = 'go';
+    request = 'launch';
+    program = "${file}";
+  }
+}
+
 -------------------- TREE-SITTER ---------------------------
 local ts = require 'nvim-treesitter.configs'
-ts.setup {ensure_installed = 'maintained', highlight = {enable = true}}
+ts.setup {ensure_installed = "all", highlight = {enable = true}}
 -------------------- COMPLETION -----------------------------------
 opt('o','completeopt','menu,menuone,noselect')
 -- Setup nvim-cmp.
@@ -120,7 +141,10 @@ cmp.setup({
     end,
   },
 
+
   mapping = {
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
@@ -214,6 +238,27 @@ lspconfig.denols.setup{
 }
 
 lspconfig.pylsp.setup{
+  on_attach = function()
+    require'lspmaps'.on_attach()
+  end,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+}
+
+lspconfig.rust_analyzer.setup{
+  on_attach = function()
+    require'lspmaps'.on_attach()
+  end,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+}
+
+lspconfig.gopls.setup{
+  on_attach = function()
+    require'lspmaps'.on_attach()
+  end,
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+}
+
+lspconfig.ccls.setup{
   on_attach = function()
     require'lspmaps'.on_attach()
   end,

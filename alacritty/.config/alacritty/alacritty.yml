@@ -8,7 +8,8 @@ colors:
     foreground: '#00ff00'
     background: '#000000'
       
-background_opacity: 0.80
+window:
+  opacity: 0.80
 
 mouse_bindings:
   - { mouse: Right, action: PasteSelection }

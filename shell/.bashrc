@@ -17,3 +17,4 @@ alias luamake=/home/sneeky/aurinstalls/lua-language-server/3rd/luamake/luamake
 
 
 PS1='[\u@\h \W]\$ '
+. "$HOME/.cargo/env"

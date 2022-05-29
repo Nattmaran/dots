@@ -1,7 +1,7 @@
 configuration {
  modi: "window,drun,ssh,combi";
- theme: "gruvbox-light";
  font: "hack 10";
  combi-modi: "window,drun,ssh";
  }
+
 @theme "/usr/share/rofi/themes/gruvbox-light.rasi"

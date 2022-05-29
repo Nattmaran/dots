@@ -15,7 +15,9 @@ compinit
 #
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$(yarn global bin)"
-export JAVA_HOME='/usr/lib/jvm/java-11-openjdk'
+export PATH="$PATH:$HOME/go/bin"
+#export JAVA_HOME='/usr/lib/jvm/java-11-openjdk'
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 alias ls='ls --color=auto'
 alias ll='ls --color=auto -l'
@@ -23,6 +25,9 @@ alias la='ls --color=auto -la'
 
 alias vim='nvim'
 alias luamake=/home/sneeky/aurinstalls/lua-language-server/3rd/luamake/luamake
+alias cn='cargo new'
+alias cr='cargo run'
+alias cb='cargo build'
 
 # git promt stuff, learn it later
 autoload -U colors && colors
@@ -42,4 +47,4 @@ vcs_info_wrapper() {
   fi
 }
 precmd(){print -rP "$bg[black]$fg[white]%m: %/ $(vcs_info_wrapper)"}
-PROMPT='> '
+ROMPT='> '
