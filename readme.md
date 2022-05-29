@@ -15,3 +15,14 @@ have to have .config folders instead of prefixed "dot-" folders in my packages.
 # Uninstall
 - export STOW_FOLDERS=fold1,fold2,fold3 etc
 - Run ./uninstall
+
+
+# Information about neovim and LSP support etc
+Java requires a whole lot of extra downloads to work properly.
+The other languages requires lsp clients and such as well but Java is the worst ofc.
+
+You'll need to download and install jdt.ls lsp client for java, a vscode-extension to use
+the integration with java-debug and nvim-dap, and make sure that all paths are correct.
+
+I'll try to remember to write a proper install-script with explanations this is just dumping some
+of the stuff i have in my head atm.

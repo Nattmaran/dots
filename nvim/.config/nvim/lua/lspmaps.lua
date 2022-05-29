@@ -21,7 +21,7 @@ lspmaps.on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(0, 'n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     vim.api.nvim_buf_set_keymap(0, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-    vim.api.nvim_buf_set_keymap(0, 'n', '<space>a', '<cmd>lua require"jdtls".code_action()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(0, 'n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     vim.api.nvim_buf_set_keymap(0, 'n', '<space>i', '<cmd>lua require"jdtls".organize_imports()<CR>', opts)
 end
 

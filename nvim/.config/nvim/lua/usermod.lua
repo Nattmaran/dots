@@ -10,17 +10,16 @@ usermod.makeJavaTest = function()
   vim.cmd('e ' .. filename)
 end
 
-usermod.loadLsp = function()
+usermod.loadLombokSupport = function()
   local JAVA_TOOL_OPTIONS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.20/lombok-1.18.20.jar"
   vim.cmd('!export JAVA_TOOL_OPTIONS=' .. JAVA_TOOL_OPTIONS)
-  require('jdtls').start_or_attach({
-    cmd = {'jdtls', vim.fn.getenv('HOME') .. '/workspace/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')},
-    root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'}),
-    on_attach = function()
-      require'lspmaps'.on_attach()
-    end,
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  })
+end
+
+
+usermod.openDapWidget = function()
+  local widgets = require('dap.ui.widgets')
+  local my_sidebar = widgets.sidebar(widgets.scopes)
+  my_sidebar.open()
 end
 
 return usermod

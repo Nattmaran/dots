@@ -89,6 +89,7 @@ map('n', '<F9>', "<cmd>lua require'dap'.continue()<CR>")
 map('n', '<F8>', "<cmd>lua require'dap'.step_over()<CR>")
 map('n', '<F7>', "<cmd>lua require'dap'.step_into()<CR>")
 map('n', '<F12>', "<cmd>lua require'dap'.step_out()<CR>")
+map('n', '<F5>', "<cmd>lua require'usermod'.openDapWidget()<CR>")
 map('n', '<leader>b', "<cmd>lua require'dap'.toggle_breakpoint()<CR>")
 
 map('n', '<C-l>', '<cmd>noh<CR>')    -- Clear highlights
@@ -210,8 +211,6 @@ lspconfig.sumneko_lua.setup {
   },
   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
-
-vim.cmd 'source $HOME/.config/nvim/java-lsp.vim'
 
 lspconfig.lemminx.setup{
     cmd = { "lemminx" },
