@@ -16,10 +16,26 @@ usermod.loadLombokSupport = function()
 end
 
 
-usermod.openDapWidget = function()
+usermod.openDapScopes = function()
   local widgets = require('dap.ui.widgets')
   local my_sidebar = widgets.sidebar(widgets.scopes)
   my_sidebar.open()
 end
+
+usermod.openDapFrames = function()
+  local widgets = require('dap.ui.widgets')
+  local my_sidebar = widgets.sidebar(widgets.frames)
+  my_sidebar.open()
+end
+
+usermod.floatDapScopes = function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.frames)
+end
+
+usermod.hoverDapExpression = function()
+  require('dap.ui.widgets').hover()
+end
+
 
 return usermod

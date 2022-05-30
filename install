@@ -1,6 +1,12 @@
 #!/bin/sh
 
+if [ $# -eq 1 ] && [ $1 == "ALL" ]; then
+  export STOW_FOLDERS=alacritty,nvim,qutebrowser,rofi,shell,sway,user-dirs
+  echo $STOW_FOLDERS
+fi
+
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
 do
-  stow $folder
+  #stow $folder
+  echo $folder
 done
