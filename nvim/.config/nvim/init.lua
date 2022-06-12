@@ -49,6 +49,7 @@ Plug 'mfussenegger/nvim-jdtls'
 
 -- debugging
 Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
 
 vim.call('plug#end')
 
@@ -141,7 +142,6 @@ cmp.setup({
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
-
 
   mapping = {
     ['<Tab>'] = cmp.mapping.select_next_item(),

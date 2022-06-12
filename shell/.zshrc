@@ -29,6 +29,12 @@ alias cn='cargo new'
 alias cr='cargo run'
 alias cb='cargo build'
 
+alias g='git'
+alias gs='git status'
+alias gl='git log --oneline'
+alias gm='git commit -am'
+alias gp='git pull'
+
 # git promt stuff, learn it later
 autoload -U colors && colors
 setopt prompt_subst
